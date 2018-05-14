@@ -5,13 +5,34 @@ class TriangleType1FS(Type1FuzzySet):
     def __init__(self, x, y, z):
         self.points = (x, y, z)
 
+    def square_sub(self, fs):
+        return (self.x[0] - fs.x[0])**2 + (self.y[0] - fs.y[0])**2 + (self.z[0] - fs.z[0])**2
+
     def __add__(self, other):
         if isinstance(other, TriangleType1FS):
             return TriangleType1FS((round(self.points[0][0] + other.points[0][0], 3), self.points[0][1]),
                                    (round(self.points[1][0] + other.points[1][0], 3), self.points[1][1]),
                                    (round(self.points[2][0] + other.points[2][0], 3), self.points[2][1])
                                    )
-        raise ValueError('No possibility to add non-type2 triangular FS')
+        elif isinstance(other, (int, float)):
+            return TriangleType1FS((round(self.points[0][0] + other, 3), self.points[0][1]),
+                                   (round(self.points[1][0] + other, 3), self.points[1][1]),
+                                   (round(self.points[2][0] + other, 3), self.points[2][1])
+                                   )
+        raise ValueError('No possibility to add non-type1 triangular FS')
+
+    def __sub__(self, other):
+        if isinstance(other, TriangleType1FS):
+            return TriangleType1FS((round(self.points[0][0] - other.points[0][0], 3), self.points[0][1]),
+                                   (round(self.points[1][0] - other.points[1][0], 3), self.points[1][1]),
+                                   (round(self.points[2][0] - other.points[2][0], 3), self.points[2][1])
+                                   )
+        elif isinstance(other, (int, float)):
+            return TriangleType1FS((round(self.points[0][0] - other, 3), self.points[0][1]),
+                                   (round(self.points[1][0] - other, 3), self.points[1][1]),
+                                   (round(self.points[2][0] - other, 3), self.points[2][1])
+                                   )
+        raise ValueError('No possibility to add non-type1 triangular FS')
 
     def __mul__(self, other):
         if isinstance(other, TriangleType1FS):
@@ -67,3 +88,6 @@ if __name__ == '__main__':
 
     t7 = ones_fuzzy_set/t1
     print(t7)
+
+    t8 = ones_fuzzy_set + 1
+    print(t8)
